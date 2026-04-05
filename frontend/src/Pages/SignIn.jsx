@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+
 import { Link, useNavigate } from "react-router-dom";
 import {
   signInStart,
@@ -26,14 +26,17 @@ export default function SignIp() {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const res = await fetch("/api/auth/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // include cookies for auth
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/auth/signin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // include cookies for auth
+          body: JSON.stringify(formData),
+        }
+      );
       const data = await res.json();
       console.log(data);
       if (data.success === false) {

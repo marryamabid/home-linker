@@ -108,14 +108,17 @@ export default function EditListing() {
       setLoading(true);
       setError(false);
 
-      const response = await fetch(`/api/listing/update/${listingId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ ...formData, userRef: currentUser._id }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/listing/update/${listingId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ ...formData, userRef: currentUser._id }),
+        }
+      );
 
       const data = await response.json();
 
@@ -136,7 +139,11 @@ export default function EditListing() {
   };
   const fetchListing = async () => {
     try {
-      const res = await fetch(`/api/listing/getListing/${listingId}`);
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_API_URL
+        }/listing/getListing/${listingId}`
+      );
       const data = await res.json();
       if (data.message === false) {
         console.log(data.message);

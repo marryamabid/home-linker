@@ -18,13 +18,16 @@ export default function SignUp() {
     setLoading(true); // Start loading
     setError(null); // Reset error state
     try {
-      const response = await fetch("/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData), // Send form data as JSON
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/auth/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData), // Send form data as JSON
+        }
+      );
       const data = await response.json();
       if (data.success === false) {
         setError(data.message); // Handle error from response

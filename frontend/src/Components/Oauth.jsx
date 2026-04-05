@@ -15,7 +15,7 @@ export default function Oauth() {
       const result = await signInWithPopup(auth, provider);
 
       const res = await axios.post(
-        "http://localhost:3000/api/auth/google",
+        `${import.meta.env.VITE_BACKEND_API_URL}/auth/google`,
         {
           username: result.user.displayName,
           email: result.user.email,

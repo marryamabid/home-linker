@@ -107,10 +107,15 @@ export default function Profile() {
   const handleUserDelete = async () => {
     try {
       deleteUserStart();
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
-        method: "DELETE",
-        credentials: "include", // include cookies for auth
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/user/delete/${
+          currentUser._id
+        }`,
+        {
+          method: "DELETE",
+          credentials: "include", // include cookies for auth
+        }
+      );
       const data = await res.json();
       if (data.success === false) {
         deleteUserFailure(data.message);
@@ -125,7 +130,9 @@ export default function Profile() {
   const handleSignOut = async () => {
     try {
       dispatch(signoutUserStart());
-      const res = await fetch("/api/auth/signout");
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/auth/signout`
+      );
       const data = await res.json();
       if (data.success === false) {
         console.log(data.message);
@@ -140,7 +147,11 @@ export default function Profile() {
   const handleShowListings = async () => {
     try {
       setShowListingError(false);
-      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/user/listings/${
+          currentUser._id
+        }`
+      );
       const data = await res.json();
       if (data.success === false) {
         setShowListingError(true);
@@ -157,9 +168,12 @@ export default function Profile() {
   };
   const deleteUserListing = async (listingId) => {
     try {
-      const res = await fetch(`/api/listing/delete/${listingId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/listing/delete/${listingId}`,
+        {
+          method: "DELETE",
+        }
+      );
       const data = await res.json();
 
       if (data.success === false) {

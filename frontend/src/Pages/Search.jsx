@@ -1,4 +1,4 @@
-import { useNavigate, useLocation, data } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ListingItem from "../Components/ListingItem";
 export default function Search() {
@@ -83,13 +83,18 @@ export default function Search() {
       setShowMore(false);
       try {
         const searchQuery = urlParams.toString();
-        const response = await fetch(`/api/listing/search?${searchQuery}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          `${
+            import.meta.env.VITE_BACKEND_API_URL
+          }/listing/search?${searchQuery}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
         const data = await response.json();
         if (data.success === false) {
           console.log(data.message);
@@ -117,13 +122,16 @@ export default function Search() {
     urlParams.set("startIndex", startIndex);
     const searchQuery = urlParams.toString();
     try {
-      const response = await fetch(`/api/listing/search?${searchQuery}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/listing/search?${searchQuery}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
       const data = await response.json();
       if (data.success === false) {
         console.log(data.message);

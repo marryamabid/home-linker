@@ -10,7 +10,6 @@ import {
   FaBath,
   FaBed,
   FaChair,
-  FaMapMarkedAlt,
   FaMapMarkerAlt,
   FaParking,
   FaShare,
@@ -32,7 +31,11 @@ export default function Listing() {
   const fetchListing = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/listing/getListing/${listingId}`);
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_API_URL
+        }/listing/getListing/${listingId}`
+      );
       const data = await res.json();
       if (data.message === false) {
         console.log(data.message);
