@@ -13,7 +13,8 @@ import authRoutes from "./routes/auth.routes.js";
 import listingRoutes from "./routes/listing.routes.js";
 
 const allowedOrigins = [
-  "http://localhost:5173", // for dev
+  "http://localhost:5173",
+  "https://home-linker1.netlify.app", // for dev
 ];
 app.use(
   cors({
