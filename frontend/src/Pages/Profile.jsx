@@ -74,14 +74,19 @@ export default function Profile() {
     try {
       dispatch(updateUserStart());
 
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // include cookies for auth
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/user/update/${
+          currentUser._id
+        }`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // include cookies for auth
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await res.json();
 
