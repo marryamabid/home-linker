@@ -22,7 +22,7 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [showListingError, setShowListingError] = useState(false);
-  const [showListing, setShowListing] = useState({});
+  const [showListing, setShowListing] = useState([]);
 
   const fileInputRef = useRef(null);
 
