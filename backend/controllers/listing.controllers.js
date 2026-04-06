@@ -49,12 +49,16 @@ export const updataListingController = async (req, res, next) => {
   }
 };
 export const getListingController = async (req, res, next) => {
-  const listing = await Listing.findById(req.params.id);
-  if (!listing) {
+  const userId = req.params.id;
+  const listings = await Listing.findById({ userRef: userId });
+  if (!listings) {
     return next(errorHandler(404, "Listing not found"));
   }
   try {
-    res.status(200).json(listing);
+    res.status(200).json({
+      success: true,
+      userListings: listings,
+    });
   } catch (error) {
     next(errorHandler(500, error.message));
   }
