@@ -149,6 +149,32 @@ export default function Profile() {
       console.error("Sign out failed:", error.message);
     }
   };
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        setShowListingError(false);
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_API_URL}/user/listings/${
+            currentUser._id
+          }`,
+          { credentials: "include" }
+        );
+        const data = await res.json();
+
+        if (data.success === false) {
+          setShowListingError(true);
+          return;
+        }
+
+        setShowListing(data.userListings); // set listings
+      } catch (error) {
+        console.error("Error fetching listings:", error.message);
+        setShowListingError(true);
+      }
+    };
+
+    if (currentUser?._id) fetchListings();
+  }, [currentUser?._id]); // runs when currentUser is ready
   const handleShowListings = async () => {
     try {
       setShowListingError(false);
@@ -290,12 +316,12 @@ export default function Profile() {
         <p className="text-green-700">User updated successfully!</p>
       )}
       <button onClick={handleShowListings} className="text-green-700 w-full">
-        Show Listings
+        Refresh Listings
       </button>
       {showListingError && (
         <p className="text-red-500 mt-2">{showListingError}</p>
       )}
-      {showListing.length === 0 && (
+      {showListing && showListing.length === 0 && (
         <div className="text-center">
           <p className="text-lg text-red-300  font-medium">No listings found</p>
           <p className="text-sm text-gray-400">

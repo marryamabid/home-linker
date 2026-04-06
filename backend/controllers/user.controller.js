@@ -4,8 +4,8 @@ import errorHandler from "../utils/errorHandler.js";
 import bcrypt from "bcryptjs";
 
 export const updateUserController = async (req, res, next) => {
-  if (req.user.id.toString() !== req.params.id.toString()) {
-    return next(errorHandler(403, "You can only update your own account"));
+  if (!req.user || req.user.id.toString() !== req.params.id.toString()) {
+    return next(errorHandler(403, "You can only access your own account"));
   }
 
   try {
@@ -40,8 +40,8 @@ export const updateUserController = async (req, res, next) => {
 };
 
 export const deleteUserController = async (req, res, next) => {
-  if (req.user.id.toString() !== req.params.id.toString()) {
-    return next(errorHandler(403, "You can only delete your own account"));
+  if (!req.user || req.user.id.toString() !== req.params.id.toString()) {
+    return next(errorHandler(403, "You can only access your own account"));
   }
 
   try {
@@ -57,8 +57,8 @@ export const deleteUserController = async (req, res, next) => {
   }
 };
 export const listingUserController = async (req, res, next) => {
-  if (req.user.id !== req.params.id) {
-    return next(errorHandler(403, "You can only view your own listings"));
+  if (!req.user || req.user.id.toString() !== req.params.id.toString()) {
+    return next(errorHandler(403, "You can only access your own account"));
   }
   try {
     const userListings = await Listing.find({ userRef: req.params.id });

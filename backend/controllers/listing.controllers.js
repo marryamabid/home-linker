@@ -14,6 +14,10 @@ export const deleteListingController = async (req, res, next) => {
     next(errorHandler(401, "No listing found"));
     return;
   }
+  if (req.user.id !== listing.userRef) {
+    next(errorHandler(401, "You can only delete your listing"));
+    return;
+  }
   try {
     await Listing.findByIdAndDelete(req.params.id);
     return res.status(200).json("User deleted successfully");
@@ -28,7 +32,10 @@ export const updataListingController = async (req, res, next) => {
     return;
   }
   console.log(listing);
-
+  if (listing.userRef !== req.user.id) {
+    next(errorHandler(401, "You can only update your listing"));
+    return;
+  }
   try {
     const updatedListing = await Listing.findByIdAndUpdate(
       req.params.id,
@@ -42,24 +49,12 @@ export const updataListingController = async (req, res, next) => {
   }
 };
 export const getListingController = async (req, res, next) => {
+  const listing = await Listing.findById(req.params.id);
+  if (!listing) {
+    return next(errorHandler(404, "Listing not found"));
+  }
   try {
-    const userId = req.user.id;
-
-    const listings = await Listing.find({
-      userRef: userId, // ✅ correct
-    });
-
-    if (!listings || listings.length === 0) {
-      return res.status(200).json({
-        success: true,
-        userListings: [],
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      userListings: listings,
-    });
+    res.status(200).json(listing);
   } catch (error) {
     next(errorHandler(500, error.message));
   }
