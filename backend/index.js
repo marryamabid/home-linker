@@ -14,7 +14,8 @@ import listingRoutes from "./routes/listing.routes.js";
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://home-linker1.netlify.app", // for dev
+  "https://home-linker1.netlify.app",
+  "https://home-linker-xgdt.vercel.app",
 ];
 app.use(
   cors({
