@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteUser } from "firebase/auth";
-import { useDebugValue } from "react";
 
 const initialState = {
   currentUser: null,

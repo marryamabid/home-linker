@@ -40,7 +40,11 @@ export const signinController = async (req, res, next) => {
         sameSite: "None",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       })
-      .json(userData);
+      .json({
+        success: true,
+        token,
+        user: userData,
+      });
   } catch (error) {
     next(errorhandler(401, error.message));
   }
@@ -53,10 +57,11 @@ export const googleController = async (req, res, next) => {
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password: _, ...userData } = user._doc; // Exclude password from user data
-      return res
-        .status(200)
-        .cookie("token", token, { httpOnly: true })
-        .json(userData);
+      return res.status(200).cookie("token", token, { httpOnly: true }).json({
+        success: true,
+        token,
+        user: userData,
+      });
     } else {
       const newPassword = Math.random().toString(36).slice(-8); // Generate a random password
       const bcryptSalt = await bcrypt.genSalt(10);
@@ -82,7 +87,11 @@ export const googleController = async (req, res, next) => {
           sameSite: "None",
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         })
-        .json(userData);
+        .json({
+          success: true,
+          token,
+          user: userData,
+        });
     }
   } catch (error) {
     console.log("Google Auth Error:", error);

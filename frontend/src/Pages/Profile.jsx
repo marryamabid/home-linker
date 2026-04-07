@@ -21,7 +21,7 @@ export default function Profile() {
   const [uploadPercent, setUploadPercent] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
-  const [showListingError, setShowListingError] = useState(false);
+  const [showListingError, setShowListingError] = useState(null);
   const [showListing, setShowListing] = useState([]);
 
   const fileInputRef = useRef(null);
@@ -95,7 +95,12 @@ export default function Profile() {
         return;
       }
       console.log("Updated user data:", data.user);
-      dispatch(updateUserSuccess(data.user));
+      dispatch(
+        updateUserSuccess({
+          ...data.user,
+          token: data.token,
+        })
+      );
     } catch (error) {
       dispatch(updateUserFailure(error.message));
     }
@@ -111,7 +116,8 @@ export default function Profile() {
 
   const handleUserDelete = async () => {
     try {
-      deleteUserStart();
+      dispatch(deleteUserStart());
+
       const res = await fetch(
         `${import.meta.env.VITE_BACKEND_API_URL}/user/delete/${
           currentUser._id
@@ -123,20 +129,23 @@ export default function Profile() {
       );
       const data = await res.json();
       if (data.success === false) {
-        deleteUserFailure(data.message);
+        dispatch(deleteUserFailure(data.message));
         return;
       }
       alert(data.message);
       dispatch(deleteUserSuccess(data));
     } catch (error) {
-      deleteUserFailure(error.message);
+      dispatch(deleteUserFailure(error.message));
     }
   };
   const handleSignOut = async () => {
     try {
       dispatch(signoutUserStart());
       const res = await fetch(
-        `${import.meta.env.VITE_BACKEND_API_URL}/auth/signout`
+        `${import.meta.env.VITE_BACKEND_API_URL}/auth/signout`,
+        {
+          credentials: "include",
+        }
       );
       const data = await res.json();
       if (data.success === false) {
@@ -186,7 +195,7 @@ export default function Profile() {
       );
       const data = await res.json();
       if (data.success === false) {
-        setShowListingError(true);
+        setShowListingError("Failed to load listings");
         console.log(data.message);
         return;
       }
